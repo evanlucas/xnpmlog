@@ -1,5 +1,5 @@
 # xnpmlog
-[![Build Status](https://circleci.com/gh/GAWMiners/xnpmlog.png?circle-token=c10da093071aea746ba068d9108b6161023378fe)](https://circleci.com/gh/GAWMiners/xnpmlog)
+[![Build Status](https://circleci.com/gh/evanlucas/xnpmlog.png?circle-token=c10da093071aea746ba068d9108b6161023378fe)](https://circleci.com/gh/evanlucas/xnpmlog)
 
 ### Author
 Evan Lucas
