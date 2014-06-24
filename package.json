@@ -38,7 +38,7 @@
     "url": "https://github.com/evanlucas/xnpmlog/issues"
   },
   "docs": {
-    "token": "",
+    "token": "c10da093071aea746ba068d9108b6161023378fe",
     "install": "$ npm install --save xnpmlog",
     "includes": [
       "lib/index.js"
