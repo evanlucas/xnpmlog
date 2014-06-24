@@ -81,6 +81,7 @@ describe('xnpmlog', function() {
   it('should have sugar for logging', function(done) {
     var log = new Logger('test', {
       level: 'silent'
+    , timestamp: false
     })
 
     var count = 0
