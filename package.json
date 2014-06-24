@@ -14,7 +14,8 @@
   },
   "scripts": {
     "test": "mocha -R spec",
-    "cover": "mocha -r blanket -R json-cov | jostle"
+    "cover": "mocha -r blanket -R json-cov | jostle",
+    "cover-html": "mocha -r blanket -R html-cov > coverage.html"
   },
   "config": {
     "blanket": {
