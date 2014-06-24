@@ -36,6 +36,8 @@ _opts_ can contain:
 | prefixStyle | Object | Set prefix style ({ fg: 'magenta' }) |
 | headingStyle | Object | Set heading style ({ fg: 'white', bg: 'black' }) |
 | stream | Stream | The stream (process.stderr) |
+| timestamp | Boolean | Include timestamp in logs (true) |
+| heading | String | The log heading ('') |
 
 ##### Params
 | Name | Type(s) | Description |
