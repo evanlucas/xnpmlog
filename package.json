@@ -1,0 +1,47 @@
+{
+  "name": "xnpmlog",
+  "version": "0.0.0",
+  "description": "Extend npmlog and allow child loggers",
+  "main": "index.js",
+  "dependencies": {
+    "npmlog": "~0.1.1"
+  },
+  "devDependencies": {
+    "jostle": "~1.0.0",
+    "blanket": "~1.1.6",
+    "mocha": "~1.20.1",
+    "should": "~4.0.4"
+  },
+  "scripts": {
+    "test": "mocha -R spec",
+    "cover": "mocha -r blanket -R json-cov | jostle"
+  },
+  "config": {
+    "blanket": {
+      "pattern": "/lib/",
+      "data-cover-never": "node_modules"
+    }
+  },
+  "license": "MIT",
+  "keywords": [
+    "log",
+    "npmlog",
+    "extend"
+  ],
+  "author": "Evan Lucas <evanlucas@me.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/evanlucas/xnpmlog"
+  },
+  "homepage": "https://github.com/evanlucas/xnpmlog",
+  "bugs": {
+    "url": "https://github.com/evanlucas/xnpmlog/issues"
+  },
+  "docs": {
+    "token": "",
+    "install": "$ npm install --save xnpmlog",
+    "includes": [
+      "lib/index.js"
+    ]
+  }
+}
