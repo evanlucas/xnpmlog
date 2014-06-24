@@ -1,6 +1,6 @@
 {
   "name": "xnpmlog",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Extend npmlog and allow child loggers",
   "main": "index.js",
   "dependencies": {
