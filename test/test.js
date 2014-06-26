@@ -121,10 +121,12 @@ describe('xnpmlog', function() {
     })
 
     log.log.on('log.trace', function(m) {
+      m.message.should.equal('test biscuits')
       next('trace')
     })
 
     log.log.on('log.verbose', function(m) {
+      m.message.should.equal('test 24')
       next('verbose')
     })
 
@@ -132,8 +134,8 @@ describe('xnpmlog', function() {
       done(err)
     })
 
-    log.trace('test')
-    log.verbose('test')
+    log.trace('test %s', 'biscuits')
+    log.verbose('test %d', 24)
     log.info('test')
     log.http('test')
     log.warn('test')
