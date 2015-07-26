@@ -1,5 +1,8 @@
 # xnpmlog
-[![Build Status](https://circleci.com/gh/evanlucas/xnpmlog.png?circle-token=c10da093071aea746ba068d9108b6161023378fe)](https://circleci.com/gh/evanlucas/xnpmlog)
+
+[![Build Status](https://travis-ci.org/evanlucas/xnpmlog.svg)](https://travis-ci.org/evanlucas/xnpmlog)
+
+[npmlog](https://github.com/npm/npmlog) with the ability to create child loggers
 
 ### Author
 Evan Lucas
