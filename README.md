@@ -1,6 +1,7 @@
 # xnpmlog
 
 [![Build Status](https://travis-ci.org/evanlucas/xnpmlog.svg)](https://travis-ci.org/evanlucas/xnpmlog)
+[![Coverage Status](http://coveralls.io/repos/evanlucas/xnpmlog/badge.svg?branch=master&service=github)](http://coveralls.io/github/evanlucas/xnpmlog?branch=master)
 
 [npmlog](https://github.com/npm/npmlog) with the ability to create child loggers
 
