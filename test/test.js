@@ -1,144 +1,136 @@
-var should = require('should')
-  , Logger = require('../')
+var Logger = require('../')
+  , test = require('tap').test
 
-describe('xnpmlog', function() {
-  it('should work with no arguments', function() {
-    var log = new Logger()
-    log.should.be.instanceOf(Logger)
-    log.should.have.property('component', 'app')
-    log.should.have.property('opts')
-    log.opts.should.have.property('loglevel', 'info')
-    log.opts.should.have.properties(['prefixStyle', 'headingStyle'])
-    log.opts.prefixStyle.should.be.type('object')
-    log.opts.prefixStyle.should.have.property('fg', 'magenta')
-    log.opts.headingStyle.should.be.type('object')
-    log.opts.headingStyle.should.have.properties({
-      fg: 'white'
-    , bg: 'black'
-    })
+test('works with no arguments', function(t) {
+  var log = new Logger()
+  t.ok(log instanceof Logger, 'instanceof Logger')
+  t.equal(log.component, 'app')
+  t.ok(log.opts, 'opts should exist')
+  t.equal(log.opts.loglevel, 'info')
+  t.ok(log.opts.hasOwnProperty('prefixStyle'), 'opts.prefixStyle exists')
+  t.ok(log.opts.hasOwnProperty('headingStyle'), 'opts.headingStyle exists')
+  t.equal(typeof log.opts.prefixStyle, 'object', 'prefixStyle is object')
+  t.equal(log.opts.prefixStyle.fg, 'magenta')
+  t.equal(typeof log.opts.headingStyle, 'object', 'headingStyle is object')
+  t.equal(log.opts.headingStyle.fg, 'white')
+  t.equal(log.opts.headingStyle.bg, 'black')
+  t.end()
+})
+
+test('works with just a component', function(t) {
+  var log = new Logger('blah')
+  t.ok(log instanceof Logger, 'instanceof Logger')
+  t.equal(log.component, 'blah')
+  t.end()
+})
+
+test('works with opts', function(t) {
+  var log = new Logger('blah', {
+    loglevel: 'silly'
+  })
+  t.ok(log instanceof Logger, 'instanceof Logger')
+  t.equal(log.component, 'blah')
+  t.equal(log.log.level, 'silly')
+  t.end()
+})
+
+test('works without new', function(t) {
+  var log = Logger('blah')
+  t.ok(log instanceof Logger, 'instanceof Logger')
+  t.equal(log.component, 'blah')
+  t.end()
+})
+
+test('has createLogger()', function(t) {
+  var log = Logger.createLogger('child')
+  t.ok(log instanceof Logger, 'instanceof Logger')
+  t.equal(log.component, 'child')
+  t.end()
+})
+
+test('can create a child', function(t) {
+  var logger = Logger.createLogger('blah')
+  t.ok(logger instanceof Logger, 'instanceof Logger')
+  var log = logger.child('child')
+  t.ok(log instanceof Logger, 'instanceof Logger')
+  t.equal(log.component, 'child')
+  t.end()
+})
+
+test('pause and resume should work', function(t) {
+  var log = new Logger()
+  log.pause()
+  t.equal(log.log._paused, true, 'stream is paused')
+  log.resume()
+  t.equal(log.log._paused, false, 'stream is not paused')
+  t.end()
+})
+
+test('can remove a level', function(t) {
+  var log = new Logger()
+  log.rmLevel('http')
+  t.notOk(log.http, 'log.http should not exist')
+  t.end()
+})
+
+test('can add a level', function(t) {
+  var log = new Logger('haha', {
+    loglevel: 'silent'
+  })
+  log.addLevel('http', 3000, {
+    fg: 'green'
+  , bg: 'black'
+  })
+  t.ok(log.http, 'log.http should exist')
+  log.log.once('log.http', function() {
+    t.end()
+  })
+  log.http('blah')
+})
+
+test('should have sugar for logging', function(t) {
+  t.plan(12)
+  var log = new Logger('test', {
+    level: 'silent'
+  , timestamps: false
   })
 
-  it('should work with just a component', function() {
-    var log = new Logger('blah')
-    log.should.be.instanceOf(Logger)
-    log.should.have.property('component', 'blah')
+  log.log.on('log', function(m) {
+    t.ok(m, 'got log message')
   })
 
-  it('should work with opts', function() {
-    var log = new Logger('blah')
-    log.should.be.instanceOf(Logger)
-    log.should.have.property('component', 'blah')
+  log.log.on('log.error', function(m) {
+    t.equal(m.message, 'error')
   })
 
-  it('should work with using new', function() {
-    var log = Logger('blah')
-    log.should.be.instanceOf(Logger)
-    log.should.have.property('component', 'blah')
+  log.log.on('log.warn', function(m) {
+    t.equal(m.message, 'warn')
   })
 
-  it('should be able to createLogger()', function() {
-    var log = Logger.createLogger('child')
-    log.should.be.instanceOf(Logger)
-    log.should.have.property('component', 'child')
+  log.log.on('log.http', function(m) {
+    t.equal(m.message, 'http')
   })
 
-  it('should be able to create a child', function() {
-    var logger = Logger.createLogger('blah')
-    var log = logger.child('child')
-    log.should.be.instanceOf(Logger)
-    log.should.have.property('component', 'child')
+  log.log.on('log.info', function(m) {
+    t.equal(m.message, 'info')
   })
 
-  it('should be able to pause and resume', function() {
-    var log = new Logger()
-    log.pause()
-    log.log._paused.should.be.true
-    log.resume()
-    log.log._paused.should.be.false
+  log.log.on('log.trace', function(m) {
+    t.equal(m.message, 'test biscuits')
   })
 
-  it('should be able to remove a level', function() {
-    var log = new Logger()
-    log.rmLevel('http')
-    should.not.exist(log.log.http)
+  log.log.on('log.verbose', function(m) {
+    t.equal(m.message, 'test 24')
   })
 
-  it('should be able to add a level', function(done) {
-    var log = new Logger('haha', {
-      loglevel: 'silent'
-    })
-    log.addLevel('http', 3000, {
-      fg: 'green'
-    , bg: 'black'
-    })
-    should.exist(log.log.http)
-    log.log.once('log.http', function() {
-      done()
-    })
-    log.http('blah')
+  log.log.on('error', function(err) {
+    t.error(err)
   })
 
-  it('should have sugar for logging', function(done) {
-    var log = new Logger('test', {
-      level: 'silent'
-    , timestamp: false
-    })
-
-    var count = 0
-    function next(level) {
-      results[level] = results[level] + 1
-      count++
-      if (count === 12) done()
-    }
-
-    var results = {
-      error: 0
-    , warn: 0
-    , http: 0
-    , info: 0
-    , trace: 0
-    , verbose: 0
-    }
-
-    log.log.on('log', function(m) {
-      next(m.level)
-    })
-
-    log.log.on('log.error', function(m) {
-      next('error')
-    })
-
-    log.log.on('log.warn', function(m) {
-      next('warn')
-    })
-
-    log.log.on('log.http', function(m) {
-      next('http')
-    })
-
-    log.log.on('log.info', function(m) {
-      next('info')
-    })
-
-    log.log.on('log.trace', function(m) {
-      m.message.should.equal('test biscuits')
-      next('trace')
-    })
-
-    log.log.on('log.verbose', function(m) {
-      m.message.should.equal('test 24')
-      next('verbose')
-    })
-
-    log.log.on('error', function(err) {
-      done(err)
-    })
-
-    log.trace('test %s', 'biscuits')
-    log.verbose('test %d', 24)
-    log.info('test')
-    log.http('test')
-    log.warn('test')
-    log.error('test')
-  })
+  log.trace('test %s', 'biscuits')
+  log.verbose('test %d', 24)
+  log.info('info')
+  log.http('http')
+  log.warn('warn')
+  log.error('error')
 })
