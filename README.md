@@ -5,6 +5,9 @@
 
 [npmlog](https://github.com/npm/npmlog) with the ability to create child loggers
 
+xnpmlog only works on iojs and node v4+. To use xnpmlog with node 0.10 or 0.12,
+install `xnpmlog@1`.
+
 ### Author
 Evan Lucas
 

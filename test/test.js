@@ -1,5 +1,7 @@
-var test = require('tap').test
-  , Logger = require('../')
+'use strict'
+
+const test = require('tap').test
+    , Logger = require('../')
 
 test('works with no arguments', function(t) {
   var log = new Logger()
